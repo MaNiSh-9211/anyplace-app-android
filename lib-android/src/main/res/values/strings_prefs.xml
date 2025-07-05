@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- TODO: CONST.kt must only rely on XML strings like below: -->
+  <string name="pref_cat_space">pref_cat_space</string>
+  <string name="pref_cv_model">pref_cv_model</string>
+  <string name="pref_cat_floor">pref_cat_floor</string>
+  <string name="pref_log_clear_cache_cv_models">pref_log_clear_cache_cv_models</string>
+  <string name="pref_log_sync_local_data">pref_log_sync_local_data</string>
+  <string name="pref_loc_cv_map">pref_loc_cv_map</string>
+  <string name="pref_selected_space">pref_selected_space</string>
+  <string name="pref_clear_available_spaces">pref_clear_available_spaces</string>
+
+  <string name="pref_ap_logout">pref_ap_logout</string>
+
+  <string name="prefcat_cv_logging">prefcat_cv_logging</string>
+  <!-- PREFERENCES: COMMON KEYS -->
+  <!--  NOTE: these are just common keys. they are stored in different apps though. -->
+  <string name="pref_cv_dev_mode">pref_cv_dev_mode</string>
+  <string name="pref_cv_autoset_initial_location">pref_cv_autoset_initial_location</string>
+  <string name="pref_cv_follow_selected_user">pref_cv_follow_selected_user</string>
+  <string name="pref_cv_scan_delay">pref_cv_scan_delay</string>
+  <string name="pref_cv_start_act">pref_cv_start_act</string>
+  <!-- PREFERENCES: CV LOGGER -->
+  <string name="pref_cvlog">pref_cvlog</string>
+  <string name="pref_cv_logging_ms">pref_cv_logging_ms</string>
+  <string name="pref_cv_localization_ms">pref_cv_localization_ms</string>
+  <!-- PREFERENCES: CV NAVIGATOR-->
+  <string name="pref_cvmap">pref_cvmap</string>
+  <string name="prev_cvmap_alpha">prev_cvmap_alpha</string>
+  <!-- PREFERENCES: SMAS -->
+  <string name="pref_smas_location_refresh">pref_smas_location_refresh</string>
+
+  <!-- PREFERENCES -->
+  <string name="pref_server_version">pref_server_version</string>
+  <!-- TODO: the below comment is now outdated. Context is now injected in CONST,
+       so we can use ctx.getString() to retrieve the same values from here! -->
+  <!-- These defaults are replicated in CONST.kt (in core-lib) -->
+  <!-- We have to have them in 2 places as the core-lib does not have XML values (pure KT lib) -->
+  <!-- And these are used in preferences_*. -->
+  <!-- In the future, when the DataStore / Preferences XML landscape clears out, we might revisit. -->
+  <!-- PREFERENCES:SERVER -->
+  <string name="default_pref_server_host">ap.cs.ucy.ac.cy</string>
+  <string name="default_pref_server_protocol">https</string>
+  <string name="default_server_access_token">ACCESS_TOKEN</string>
+  <string name="default_pref_server_port">44</string>
+
+</resources>

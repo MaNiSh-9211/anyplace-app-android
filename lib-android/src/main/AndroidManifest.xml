@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="cy.ac.ucy.cs.anyplace.lib" >
+
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" /> <!-- AP-CV -->
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+  <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+  <uses-feature android:name="android.hardware.sensor.stepcounter" />
+
+  <uses-permission android:name="android.permission.VIBRATE" />
+
+  <queries>
+    <package android:name="com.flir.myflir.s62" />
+    <intent>
+      <action android:name="android.speech.RecognitionService" />
+    </intent>
+  </queries>
+
+  <application tools:ignore="LockedOrientationActivity" >
+    <activity
+        android:name="cy.ac.ucy.cs.anyplace.lib.android.ui.cv.yolo.tflite.example.DetectorActivity"
+        android:label="TFLite Demo"
+        android:exported="true"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.Compat.ObjectDetection" />
+    <activity
+        android:name=".android.ui.user.AnyplaceLoginActivity"
+        android:theme="@style/AppTheme.Compat.Fullscreen"
+        android:exported="true"
+        android:screenOrientation="portrait"
+        android:label="@string/title_activity_login" />
+    <activity
+        android:name=".android.ui.selector.space.SelectSpaceActivity"
+        android:exported="true"
+        android:theme="@style/AppTheme.Compat.whiteToolbar"
+        android:screenOrientation="portrait"
+        android:label="@string/title_select_space" />
+
+    <!-- SMAS ACTIVITIES -->
+    <activity
+        android:name="cy.ac.ucy.cs.anyplace.lib.android.ui.cv.logger.CvLoggerActivity"
+        android:screenOrientation="portrait"
+        android:exported="false"
+        android:theme="@style/AppTheme.Compat.ObjectDetection" />
+    <activity
+        android:name=".android.ui.cv.navigator.CvNavigatorActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.Compat.ObjectDetection"
+        android:exported="true">
+    </activity>
+    <activity
+        android:name=".android.ui.smas.SmasMainActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.Compat.ObjectDetection"
+        android:exported="true">
+    </activity>
+    <activity
+        android:name="cy.ac.ucy.cs.anyplace.lib.android.ui.smas.SearchActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.Compat.ObjectDetection"
+        android:exported="true">
+    </activity>
+    <activity
+        android:name=".android.ui.smas.chat.SmasChatActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.Compat.ObjectDetection"
+        android:exported="true"
+        android:windowSoftInputMode="adjustResize|stateVisible">
+    </activity>
+    <!-- SETTINGS ACTIVITIES (3)-->
+    <!-- SMAS SERVER SETTINGS -->
+    <activity
+        android:name="cy.ac.ucy.cs.anyplace.lib.android.ui.settings.smas.SettingsSmasServerActivity"
+        android:exported="true"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.Compat"
+        android:label="SMAS Settings" />
+    <activity
+        android:name=".android.ui.settings.SettingsAnyplaceServerActivity"
+        android:exported="true"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.Compat"
+        android:label="Server Settings" />
+    <activity
+        android:name=".android.ui.settings.SettingsCvActivity"
+        android:theme="@style/AppTheme.Compat"
+        android:screenOrientation="portrait"
+        android:exported="true"
+        android:label="Settings" />
+
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="${MAPS_API_KEY}" />
+    <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version" />
+
+  <!-- Download Google's ML Kit models right after the app installation -->
+    <meta-data
+        android:name="com.google.mlkit.vision.DEPENDENCIES"
+        android:value="ocr" />
+  </application>
+
+</manifest>

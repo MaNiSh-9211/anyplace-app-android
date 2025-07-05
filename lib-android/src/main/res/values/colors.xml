@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (C) 2008 ZXing authors
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<resources>
+
+  <color name="lightRed">#cd5c5c</color>
+  <color name="red">#F74331</color>
+  <color name="redDark">#A41507</color>
+  <!--<color name="blue">#0d47a1</color>-->
+  <color name="blue">#0063BE</color>
+  <color name="lightBlue">#5472d3</color>
+  <color name="darkBlue">#002171</color>
+  <color name="darkBlue50">#50002171</color>
+
+  <color name="lighterGray">#ddd</color>
+
+  <color name="yellow">#FFC114</color>
+  <color name="yellow2">#E6BB06</color>
+  <color name="yellowDark">#C4A008</color>
+  <color name="yellowDark2">#805500</color>
+  <color name="yellowDark3">#452E00</color>
+
+  <color name="colorPrimary">@color/blue</color>
+  <color name="colorPrimaryDark">@color/darkBlue</color>
+  <color name="colorPrimaryDark50">@color/darkBlue50</color>
+  <color name="colorAccent">@color/lightBlue</color>
+
+
+  <color name="locationRecent">@color/dark</color>
+  <color name="locationAlert">@color/redDark</color>
+  <color name="locationSmas">@color/colorPrimary</color>
+  <color name="locationManual">@color/yellowDark</color>
+  <color name="locationManualDark">@color/yellowDark2</color>
+  <color name="locationOtherInactive">@color/gray</color>
+  <color name="locationOtherInactiveDark">@color/dark</color>
+
+  <color name="white">#FFFFFF</color>
+  <color name="white_20">#20FFFFFF</color>
+  <color name="white_50">#50FFFFFF</color>
+  <color name="white_70">#70FFFFFF</color>
+  <color name="black_70">#70000000</color>
+  <color name="white_B0">#B0FFFFFF</color>
+  <color name="lightGray">#F9F9F9</color>
+  <color name="mediumGray">#D1D1D1</color>
+  <color name="lightMediumGray">#80D1D1D1</color>
+  <color name="grayLight2">#808080</color>
+  <color name="grayLight1">#959595</color>
+  <color name="darkGray_77">#774B4B4B</color>
+  <color name="darkGray">#4B4B4B</color>
+  <color name="dark">#313C44</color>
+  <color name="darker">#151B20</color>
+  <color name="black">#000000</color>
+  <color name="green">#1ABC9C</color>
+  <color name="greenDarker">#025A49</color>
+
+  <color name="gmapsGrayColor">#F7F8F9</color>
+  <color name="warning">#E64900</color>
+  <color name="info">@color/holo_light_blue</color>
+  <color name="dev_mode">#4320CD</color>
+
+  <color name="velvet">#273697</color>
+
+  <!-- OLD COLORS -->
+  <color name="action_bar">#273697</color>
+  <color name="floor_arrow">#646464</color>
+  <color name="info_window">#ABABAB</color>
+  <color name="contents_text">#ff000000</color>
+  <color name="encode_view">#ffffffff</color>
+  <color name="help_button_view">#ffcccccc</color>
+  <color name="help_view">#ff404040</color>
+  <color name="possible_result_points">#c0ffff00</color>
+  <color name="result_image_border">#ffffffff</color>
+  <color name="result_minor_text">#ffc0c0c0</color>
+  <color name="result_points">#c000ff00</color>
+  <color name="result_text">#ffffffff</color>
+  <color name="result_view">#b0000000</color>
+  <color name="sbc_header_text">#ff808080</color>
+  <color name="sbc_header_view">#ffffffff</color>
+  <color name="sbc_list_item">#fffff0e0</color>
+  <color name="sbc_layout_view">#ffffffff</color>
+  <color name="sbc_page_number_text">#ff000000</color>
+  <color name="sbc_snippet_text">#ff4b4b4b</color>
+  <color name="share_text">#ff000000</color>
+  <color name="status_text">#ffffffff</color>
+  <color name="transparent">#00000000</color>
+  <color name="viewfinder_frame">#ff000000</color>
+  <color name="viewfinder_laser">#ffff0000</color>
+  <color name="viewfinder_mask">#60000000</color>
+  <color name="side_navigation_background">#303030</color>
+  <color name="side_navigation_outside_background">#7000</color>
+  <color name="side_navigation_list_divider_color">#4f4f4f</color>
+  <color name="side_navigation_item_text_color">#f3f3f3</color>
+  <color name="fuchsia">#FF00FF</color>
+  <color name="silver">#C0C0C0</color>
+  <color name="gray">#4f4f4f</color>
+  <color name="olive">#808000</color>
+  <color name="purple">#800080</color>
+  <color name="maroon">#800000</color>
+  <color name="aqua">#00FFFF</color>
+  <color name="lime">#00FF00</color>
+  <color name="teal">#008080</color>
+  <color name="navy">#000080</color>
+  <color name="orange">#FEC680</color>
+  <color name="dark_orange">#FFBB3D</color>
+  <color name="very_light_blue">#ffe2f4fb</color>
+  <color name="holo_light_blue">#ff33b5e5</color>
+  <color name="holo_dark_blue">#ff0099cc</color>
+  <color name="holo_light_purple">#ffaa66cc</color>
+  <color name="holo_dark_purple">#9933cc</color>
+  <color name="holo_light_green">#ff99cc00</color>
+  <color name="holo_dark_green">#ff669900</color>
+  <color name="holo_light_orange">#ffffbb33</color>
+  <color name="holo_dark_orange">#ffff8800</color>
+  <color name="holo_light_red">#ffff4444</color>
+  <color name="holo_dark_red">#ffcc0000</color>
+  <color name="lp_maroon">#ff920000</color>
+
+  <!-- LIGHT THEME -->
+  <color name="backgroundColor">@color/lightGray</color>
+  <color name="placeholderColor">@color/mediumGray</color>
+  <color name="itemColor">@color/darker</color>
+
+  // Custom Chip Style
+  <color name="checkedChipBackgroundColor">@color/colorPrimary</color>
+  <color name="chipBackgroundColor">@color/lightGray</color>
+  <!--<color name="checkedChipTextColor">@color/colorPrimary</color>-->
+  <color name="chipTextColor">@color/darkGray</color>
+
+  // Custom CardView Style
+  <color name="strokeColor">@color/lightMediumGray</color>
+  <color name="cardBackgroundColor">@color/white</color>
+  <color name="titleColor">@color/darker</color>
+  <color name="descriptionColor">@color/darkGray</color>
+
+  <color name="statusBarColor">@color/colorPrimaryDark</color>
+  <color name="contextualStatusBarColor">@color/darker</color>
+  <color name="contextualActionBarColor">@color/dark</color>
+  <color name="cardBackgroundLightColor">#106200EA</color>
+  <color name="actionBarBackgroundColor">@color/colorPrimary</color>
+
+  // Custom Bottom Navigation Style
+  <color name="bottomNavBackground">@color/white</color>
+  <color name="bottomNavItemColor">@color/darkGray</color>
+  <color name="bottomNavCheckedItemColor">@color/colorPrimary</color>
+
+  <!-- SMAS -->
+  <color name="black_overlay">#66000000</color>
+  <color name="lash_red_dark">#FFD8171B</color>
+  <color name="lash_red">#FFD8171B</color>
+  <color name="lash_blue_dark">#FF01407A</color>
+  <color name="lash_blue">#FF0063BE</color>
+  <color name="lash_blue_light">#FF1F93FD</color>
+
+</resources>
