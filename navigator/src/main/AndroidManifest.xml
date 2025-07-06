@@ -15,6 +15,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
       android:theme="@style/Theme.AppCompat"
+      android:usesCleartextTraffic="true"
       tools:ignore="LockedOrientationActivity">
 
     <!-- The initial [StartActivity] is in lib-android -->

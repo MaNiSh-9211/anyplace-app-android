@@ -120,14 +120,16 @@ class StartActivity : BaseActivity() {
       val chatUser = app.dsUserSmas.read.first()
       val prefsCv = app.dsCvMap.read.first()
 
-      // authenticated SMAS Users try to open the Smas/Logger activity
-      // If no space is selected, the user might have to authenticate to Anyplace also
-      if (chatUser.sessionkey.isNotBlank()) {
-        LOG.W(TG, "$MT: user: session: $chatUser")
+      // BYPASS: Skip SMAS login and go directly to Anyplace for basic navigation
+      // TODO: Remove this bypass when SMAS is properly configured
+      val skipSmasLogin = true // Set to false to re-enable SMAS login
+      
+      if (skipSmasLogin || chatUser.sessionkey.isNotBlank()) {
+        LOG.W(TG, "$MT: user: session: $chatUser (SMAS login bypassed: $skipSmasLogin)")
 
         val selectedSpace = prefsCv.selectedSpace
         // there is a space selection, but for some reason they are not cached locally:
-        // fetch them now
+         // fetch them now
         // if there isnt: it will open the FloorSelector (by [openActivity],
         // and when the user selects a floor, it will download them
         if (selectedSpace.isNotEmpty() && !cache.hasSpaceAndFloor(selectedSpace)) {

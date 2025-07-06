@@ -163,14 +163,22 @@ class CvLoggerActivity: CvMapActivity(), OnMapReadyCallback {
   * Only authenticated users are allowed to use this activity
   */
   private fun collectLoggedInChatUser() {
-    // only logged in users are allowed on this activity:
-    lifecycleScope.launch(Dispatchers.IO) {
-      app.dsUserSmas.read.collect { user ->
-        if (user.sessionkey.isBlank()) {
-          finish()
-          startActivity(Intent(this@CvLoggerActivity, app.getSmasBackendLoginActivity()))
+    // BYPASS: Skip SMAS session check for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipSmasSessionCheck = true // Set to false to re-enable SMAS session check
+    
+    if (!skipSmasSessionCheck) {
+      // only logged in users are allowed on this activity:
+      lifecycleScope.launch(Dispatchers.IO) {
+        app.dsUserSmas.read.collect { user ->
+          if (user.sessionkey.isBlank()) {
+            finish()
+            startActivity(Intent(this@CvLoggerActivity, app.getSmasBackendLoginActivity()))
+          }
         }
       }
+    } else {
+      LOG.W(TG, "SMAS session check bypassed in logger for basic navigation")
     }
   }
 

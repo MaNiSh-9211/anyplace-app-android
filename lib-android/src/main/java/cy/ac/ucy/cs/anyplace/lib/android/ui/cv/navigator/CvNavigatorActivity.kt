@@ -211,34 +211,42 @@ class CvNavigatorActivity : CvMapActivity(), OnMapReadyCallback {
    */
   var updatingLocationsLoop = false
   private fun updateLocationsLOOP()  {
-    if (updatingLocationsLoop) return
-    updatingLocationsLoop=true
+    // BYPASS: Skip SMAS location loop for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipSmasLocationLoop = true // Set to false to re-enable SMAS location loop
+    
+    if (!skipSmasLocationLoop) {
+      if (updatingLocationsLoop) return
+      updatingLocationsLoop=true
 
-    lifecycleScope.launch(Dispatchers.IO) {
-      while (true) {
-        var msg = "pull"
-        if (isActive && app.hasLastLocation()) {
-          val coords = app.locationSmas.value.coord!!
-          val userCoords = UserCoordinates(app.wSpace.obj.buid,
-                  coords.level, coords.lat, coords.lon)
-          VM.nwLocationSend.safeCall(userCoords)
-          msg+="&send"
+      lifecycleScope.launch(Dispatchers.IO) {
+        while (true) {
+          var msg = "pull"
+          if (isActive && app.hasLastLocation()) {
+            val coords = app.locationSmas.value.coord!!
+            val userCoords = UserCoordinates(app.wSpace.obj.buid,
+                    coords.level, coords.lat, coords.lon)
+            VM.nwLocationSend.safeCall(userCoords)
+            msg+="&send"
+          }
+
+          msg="($msg) "
+          if (!isActive) msg+=" [inactive]"
+          if (!app.hasLastLocation()) msg+=" [no-location-yet]"
+
+          if (!app.hasInternet()) {
+            msg+="[SKIP: NO-INTERNET]"
+          } else {
+            VM.nwLocationGet.safeCall()
+          }
+
+          LOG.V2(TG, "loop-location: main: $msg")
+
+          delay(VM.prefsCvMap.locationRefreshMs.toLong())
         }
-
-        msg="($msg) "
-        if (!isActive) msg+=" [inactive]"
-        if (!app.hasLastLocation()) msg+=" [no-location-yet]"
-
-        if (!app.hasInternet()) {
-          msg+="[SKIP: NO-INTERNET]"
-        } else {
-          VM.nwLocationGet.safeCall()
-        }
-
-        LOG.V2(TG, "loop-location: main: $msg")
-
-        delay(VM.prefsCvMap.locationRefreshMs.toLong())
       }
+    } else {
+      LOG.W(TG, "SMAS location loop bypassed for basic navigation")
     }
   }
 

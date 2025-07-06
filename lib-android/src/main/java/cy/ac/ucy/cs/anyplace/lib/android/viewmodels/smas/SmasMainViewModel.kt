@@ -78,15 +78,23 @@ class SmasMainViewModel @Inject constructor(
    */
   var collectingLocations = false
   fun collectLocations(VMchat: SmasChatViewModel,mapH: GmapWrapper) {
-    if (collectingLocations) return
-    collectingLocations=true
-    if (app.level.value == null) {  // floor not ready yet
-      LOG.W(TAG_METHOD, "Floor not loaded yet")
-      return
-    }
+    // BYPASS: Skip SMAS location collection for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipSmasLocationCollection = true // Set to false to re-enable SMAS location collection
+    
+    if (!skipSmasLocationCollection) {
+      if (collectingLocations) return
+      collectingLocations=true
+      if (app.level.value == null) {  // floor not ready yet
+        LOG.W(TAG_METHOD, "Floor not loaded yet")
+        return
+      }
 
-    viewModelScope.launch(Dispatchers.IO) { nwLocationSend.collect() }
-    viewModelScope.launch(Dispatchers.IO) { nwLocationGet.collect(VMchat, mapH) }
+      viewModelScope.launch(Dispatchers.IO) { nwLocationSend.collect() }
+      viewModelScope.launch(Dispatchers.IO) { nwLocationGet.collect(VMchat, mapH) }
+    } else {
+      LOG.W(TG, "SMAS location collection bypassed for basic navigation")
+    }
   }
 
   fun toggleAlert() : LocationSendNW.Mode {
@@ -125,11 +133,19 @@ class SmasMainViewModel @Inject constructor(
   }
 
   fun readBackendVersion() {
-    viewModelScope.launch(Dispatchers.IO) {
-      val prefsChat = app.dsSmas.read.first()
-      if (prefsChat.version == null) {
-        nwVersion.getVersion()
+    // BYPASS: Skip SMAS version check for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipSmasVersionCheck = true // Set to false to re-enable SMAS version check
+    
+    if (!skipSmasVersionCheck) {
+      viewModelScope.launch(Dispatchers.IO) {
+        val prefsChat = app.dsSmas.read.first()
+        if (prefsChat.version == null) {
+          nwVersion.getVersion()
+        }
       }
+    } else {
+      LOG.W(TG, "SMAS version check bypassed for basic navigation")
     }
   }
 

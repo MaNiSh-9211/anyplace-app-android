@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import cy.ac.ucy.cs.anyplace.lib.R
+import android.widget.Toast
 import cy.ac.ucy.cs.anyplace.lib.android.AnyplaceApp
 import cy.ac.ucy.cs.anyplace.lib.android.data.anyplace.store.CvMapPrefs
 import cy.ac.ucy.cs.anyplace.lib.android.data.anyplace.wrappers.SpaceWrapper
@@ -192,8 +193,17 @@ class SpacesAdapter(private val app: AnyplaceApp,
      */
     suspend fun downloadSpaceResources(space: Space, prefsCv: CvMapPrefs, showNotif: Boolean) : Boolean {
       val MT = ::downloadSpaceResources.name
-      if(!downloadCvModelFilesAndCvClasses(prefsCv)) return false
-      downloadCvFingerprints(prefsCv) // not critical, so not returning a bool
+      
+      // BYPASS: Skip CV model downloads for basic navigation
+      // TODO: Remove this bypass when SMAS is properly configured
+      val skipCvModelDownloads = true // Set to false to re-enable CV model downloads
+      
+      if (!skipCvModelDownloads) {
+        if(!downloadCvModelFilesAndCvClasses(prefsCv)) return false
+        downloadCvFingerprints(prefsCv) // not critical, so not returning a bool
+      } else {
+        LOG.W(TG, "$MT: CV model downloads bypassed for basic navigation")
+      }
 
       val shortName = if (space.name.length > 20) space.name.take(15) else space.name
       if (showNotif) {
@@ -215,16 +225,25 @@ class SpacesAdapter(private val app: AnyplaceApp,
     private suspend fun downloadCvModelFilesAndCvClasses(prefsCv: CvMapPrefs) : Boolean {
       val MT = ::downloadCvModelFilesAndCvClasses.name
       LOG.D(TG, MT)
-      if  (act.VMcv.nwCvModelFilesGet.mustDownloadCvModels()) {
-        val msg = "Downloading CvModels. Please wait.."
-        LOG.W(TG, "$MT: $msg")
-        notify.INFO(scope, msg)
-        if(!act.VMcv.nwCvModelFilesGet.downloadMissingModels()) { // tflite/weights, and labels
+      
+      // BYPASS: Skip CV model downloads for basic navigation
+      // TODO: Remove this bypass when SMAS is properly configured
+      val skipCvModelDownloads = true // Set to false to re-enable CV model downloads
+      
+      if (!skipCvModelDownloads) {
+        if  (act.VMcv.nwCvModelFilesGet.mustDownloadCvModels()) {
+          val msg = "Downloading CvModels. Please wait.."
+          LOG.W(TG, "$MT: $msg")
+          notify.INFO(scope, msg)
+          if(!act.VMcv.nwCvModelFilesGet.downloadMissingModels()) { // tflite/weights, and labels
+            return false
+          }
+        }
+        if (!act.VMcv.nwCvModelsGet.conditionalBlockingCall()) { // labels, but in the SMAS sqlite format (containing OIDs, etc)
           return false
         }
-      }
-      if (!act.VMcv.nwCvModelsGet.conditionalBlockingCall()) { // labels, but in the SMAS sqlite format (containing OIDs, etc)
-        return false
+      } else {
+        LOG.W(TG, "$MT: CV model files download bypassed for basic navigation")
       }
 
       return true

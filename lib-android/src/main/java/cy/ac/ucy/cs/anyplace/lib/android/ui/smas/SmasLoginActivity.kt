@@ -182,13 +182,20 @@ class SmasLoginActivity : BaseActivity() {
               val user = response.data
               user?.let {
                 app.dsUserSmas.storeUser(SmasUser(user.uid, user.sessionkey))
-                if (!DBG.USE_SPACE_SELECTOR) {
+                
+                // BYPASS: Skip CV model downloads for basic navigation
+                // TODO: Remove this bypass when SMAS is properly configured
+                val skipCvModelDownloads = true // Set to false to re-enable CV model downloads
+                
+                if (!DBG.USE_SPACE_SELECTOR && !skipCvModelDownloads) {
                   VMcv.nwCvModelFilesGet.downloadMissingModels()
                   lifecycleScope.launch(Dispatchers.Main) {
                     binding.textViewError.text = "Downloading CvModels..."
                     binding.textViewError.visibility = View.VISIBLE
                     binding.textViewError.setTextColor(UtilColor(applicationContext).Black())
                   }
+                } else if (skipCvModelDownloads) {
+                  LOG.W(TG, "CV model downloads bypassed for basic navigation")
                 }
                 openLoggedInActivity()
               }

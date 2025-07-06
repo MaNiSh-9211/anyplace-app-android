@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.GoogleMap
@@ -110,7 +111,7 @@ abstract class CvMapActivity : DetectorActivityBase(), OnMapReadyCallback {
     LOG.D(TG, MT)
 
     updateModelName()
-    collectLoggedInUser()
+    collectUser()
 
     lifecycleScope.launch(Dispatchers.IO) {
       LOG.D(TG, "CvMap: $MT: getting models.. CvModels")
@@ -140,19 +141,28 @@ abstract class CvMapActivity : DetectorActivityBase(), OnMapReadyCallback {
    * Only authenticated users are allowed to use this activity
    */
   var collectingUser = false
-  private fun collectLoggedInUser() {
-    if (collectingUser) return
+  private fun collectUser() {
+    val MT = ::collectUser.name
+    LOG.D(TG, MT)
     collectingUser = true
 
-    // only logged in users are allowed on this activity:
-    lifecycleScope.launch(Dispatchers.IO) {
-      app.dsUserSmas.read.collectLatest { user ->
-        if (user.sessionkey.isBlank()) {
-          finish()
+    // BYPASS: Skip SMAS session check for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipSmasSessionCheck = true // Set to false to re-enable SMAS session check
+    
+    if (!skipSmasSessionCheck) {
+      // only logged in users are allowed on this activity:
+      lifecycleScope.launch(Dispatchers.IO) {
+        app.dsUserSmas.read.collectLatest { user ->
+          if (user.sessionkey.isBlank()) {
+            finish()
 
-          startActivity(Intent(this@CvMapActivity, app.getSmasBackendLoginActivity()))
+            startActivity(Intent(this@CvMapActivity, app.getSmasBackendLoginActivity()))
+          }
         }
       }
+    } else {
+      LOG.W(TG, "SMAS session check bypassed for basic navigation")
     }
   }
 
@@ -299,10 +309,27 @@ abstract class CvMapActivity : DetectorActivityBase(), OnMapReadyCallback {
     val MT = ::onMapReady.name
     LOG.W(TG, "$MT: map ready")
 
-    VM.ui.map.setup(googleMap, this)
-    lifecycleScope.launch(Dispatchers.Main) {
-      VM.ui.localization.setup()
-      collectOwnUserLocation()
+    try {
+      VM.ui.map.setup(googleMap, this)
+      lifecycleScope.launch(Dispatchers.Main) {
+        VM.ui.localization.setup()
+        collectOwnUserLocation()
+      }
+      LOG.D(TG, "$MT: Google Maps initialized successfully")
+    } catch (e: Exception) {
+      LOG.E(TG, "$MT: Failed to setup Google Maps: ${e.message}")
+      
+      // Show error dialog
+      val alertDialog = AlertDialog.Builder(this)
+        .setTitle("Map Error")
+        .setMessage("Failed to initialize Google Maps: ${e.message}\n\nThis might be due to:\n• Missing or invalid Google Maps API key\n• Network connectivity issues\n• Google Play Services problems")
+        .setPositiveButton("OK") { _, _ ->
+          finish()
+        }
+        .setCancelable(false)
+        .create()
+      
+      alertDialog.show()
     }
   }
 

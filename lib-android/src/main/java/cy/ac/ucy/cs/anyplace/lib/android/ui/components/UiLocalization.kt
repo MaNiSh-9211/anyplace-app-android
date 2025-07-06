@@ -252,7 +252,7 @@ class UiLocalization(
    * Collect localization status
    */
   fun collectStatus() {
-    val MT = ::collectStatus.name
+    val MT = "collectStatus"
     if (collecting) return; collecting =true
 
     scope.launch(Dispatchers.IO) {
@@ -263,9 +263,15 @@ class UiLocalization(
           LocalizationMode.running -> {
             VM.onLocalizationStarted()
 
-            if (!app.cvUtils.isModelInited()) {
+            // BYPASS: Skip CV model check for WiFi-based localization
+            // TODO: Remove this bypass when CV models are properly configured
+            val skipCvModelCheck = true // Set to false to re-enable CV model check
+            
+            if (!skipCvModelCheck && !app.cvUtils.isModelInited()) {
               notify.long(scope, C.ERR_NO_CV_CLASSES)
               return@collect
+            } else if (skipCvModelCheck) {
+              LOG.W(TG, "$MT: CV model check bypassed - using WiFi-based localization")
             }
 
             startLocalization()
@@ -284,7 +290,16 @@ class UiLocalization(
     val MT = ::startLocalization.name
 
     LOG.D2(TG, MT)
-    VM.enableCvDetection()
+    
+    // BYPASS: Skip CV detection for WiFi-based localization
+    // TODO: Remove this bypass when CV models are properly configured
+    val skipCvDetection = true // Set to false to re-enable CV detection
+    
+    if (!skipCvDetection) {
+      VM.enableCvDetection()
+    } else {
+      LOG.W(TG, "$MT: CV detection bypassed - using WiFi-based localization")
+    }
 
     val tracking = VM.isTracking()
     VM.currentTime = System.currentTimeMillis()
@@ -317,7 +332,17 @@ class UiLocalization(
 
   suspend fun endLocalization() {
     val MT = ::endLocalization.name
-    VM.disableCvDetection()
+    
+    // BYPASS: Skip CV detection for WiFi-based localization
+    // TODO: Remove this bypass when CV models are properly configured
+    val skipCvDetection = true // Set to false to re-enable CV detection
+    
+    if (!skipCvDetection) {
+      VM.disableCvDetection()
+    } else {
+      LOG.W(TG, "$MT: CV detection bypassed - using WiFi-based localization")
+    }
+    
     LOG.D2(TG, MT)
 
     val tracking = VM.isTracking()

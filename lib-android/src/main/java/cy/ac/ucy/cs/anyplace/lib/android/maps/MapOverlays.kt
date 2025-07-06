@@ -96,11 +96,22 @@ open class MapOverlays(
    * Removes the previous floorplan before drawing a new one
    */
   fun drawFloorplan(bitmap: Bitmap?, map: GoogleMap, bounds: LatLngBounds) {
+    val MT = ::drawFloorplan.name
+    LOG.D(TG, "$MT: bitmap=${bitmap != null}, bounds=${bounds}")
+    
     if (bitmap != null) {
+      LOG.D(TG, "$MT: Bitmap size: ${bitmap.width}x${bitmap.height}")
+      LOG.D(TG, "$MT: Bounds: SW(${bounds.southwest.latitude}, ${bounds.southwest.longitude}) NE(${bounds.northeast.latitude}, ${bounds.northeast.longitude})")
+      
       if (floorplanOverlay != null) {
+        LOG.D(TG, "$MT: Removing previous floorplan overlay")
         uiRemoveFloorplanOverlay()
       }
+      
+      LOG.D(TG, "$MT: Adding new ground overlay")
       uiAddGroundOverlay(map, bitmap, bounds)
+    } else {
+      LOG.E(TG, "$MT: Bitmap is null, cannot draw floorplan")
     }
   }
 
@@ -109,6 +120,9 @@ open class MapOverlays(
   }
 
   fun uiAddGroundOverlay(map: GoogleMap, bitmap: Bitmap, bounds: LatLngBounds) {
+    val MT = ::uiAddGroundOverlay.name
+    LOG.D(TG, "$MT: Creating ground overlay with bitmap ${bitmap.width}x${bitmap.height}")
+    
     val bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap)
     scope.launch(Dispatchers.Main) {
       // make the caller method normal, and this on main thread....
@@ -117,6 +131,7 @@ open class MapOverlays(
                 positionFromBounds(bounds)
                 image(bitmapDescriptor)
               })
+      LOG.D(TG, "$MT: Ground overlay created successfully: ${floorplanOverlay != null}")
     }
   }
 

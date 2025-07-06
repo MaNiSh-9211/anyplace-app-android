@@ -68,6 +68,7 @@ abstract class CameraActivity : AppCompatActivity(),
   companion object {
     private const val PERMISSIONS_REQUEST = 1
     private const val PERMISSION_CAMERA = Manifest.permission.CAMERA
+    private const val TG = "camera-activity"
 
     private fun allPermissionsGranted(grantResults: IntArray): Boolean {
       for (result in grantResults) {
@@ -174,6 +175,15 @@ abstract class CameraActivity : AppCompatActivity(),
   }
 
   fun checkPermissionsAndConnectCamera() {
+    // BYPASS: Skip camera initialization for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipCameraInitialization = true // Set to false to re-enable camera initialization
+    
+    if (skipCameraInitialization) {
+      LOG.W(TG, "Camera initialization bypassed for basic navigation")
+      return
+    }
+    
     if (hasCameraPermission()) {
       setFragment()
     } else {
@@ -312,6 +322,16 @@ abstract class CameraActivity : AppCompatActivity(),
   override fun onRequestPermissionsResult(
           code: Int, perms: Array<String>, result: IntArray) {
     super.onRequestPermissionsResult(code, perms, result)
+    
+    // BYPASS: Skip camera permission result handling for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipCameraPermissionHandling = true // Set to false to re-enable camera permission handling
+    
+    if (skipCameraPermissionHandling) {
+      LOG.W(TG, "Camera permission result handling bypassed for basic navigation")
+      return
+    }
+    
     if (code == PERMISSIONS_REQUEST) {
       if (allPermissionsGranted(result)) {
         setFragment()
@@ -380,6 +400,15 @@ abstract class CameraActivity : AppCompatActivity(),
   }
 
   protected fun setFragment() {
+    // BYPASS: Skip camera fragment setup for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipCameraFragmentSetup = true // Set to false to re-enable camera fragment setup
+    
+    if (skipCameraFragmentSetup) {
+      LOG.W(TG, "Camera fragment setup bypassed for basic navigation")
+      return
+    }
+    
     val cameraId = chooseCamera()
     val fragment: androidx.fragment.app.Fragment
     if (useCamera2API) {

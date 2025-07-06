@@ -130,13 +130,36 @@ class LevelPlanNW(
 
   /** Handles the response by decoding the base64 to a [bitmap] */
   private fun handleResponse(response: Response<ResponseBody>): Bitmap? {
+    val MT = ::handleResponse.name
+    
     if (response.errorBody() != null) {
-      LOG.E("Response: ErrorBody: ${response.errorBody().toString()}")
+      LOG.E(TG, "$MT: ErrorBody: ${response.errorBody().toString()}")
       return null
     }
+    
     val base64 = response.body()?.string()
-    val byteArray = Base64.decode(base64, Base64.DEFAULT)
-    return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    LOG.D(TG, "$MT: Base64 response length: ${base64?.length ?: 0}")
+    
+    if (base64.isNullOrEmpty()) {
+      LOG.E(TG, "$MT: Base64 response is null or empty")
+      return null
+    }
+    
+    try {
+      val byteArray = Base64.decode(base64, Base64.DEFAULT)
+      LOG.D(TG, "$MT: Decoded byte array length: ${byteArray.size}")
+      
+      val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+      if (bitmap != null) {
+        LOG.D(TG, "$MT: Successfully decoded bitmap: ${bitmap.width}x${bitmap.height}")
+      } else {
+        LOG.E(TG, "$MT: Failed to decode bitmap from byte array")
+      }
+      return bitmap
+    } catch (e: Exception) {
+      LOG.E(TG, "$MT: Exception decoding base64: ${e.message}")
+      return null
+    }
   }
 
 

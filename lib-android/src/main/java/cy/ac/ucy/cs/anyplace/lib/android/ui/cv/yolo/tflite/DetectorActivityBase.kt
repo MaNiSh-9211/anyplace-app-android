@@ -162,6 +162,16 @@ abstract class DetectorActivityBase : CameraActivity(),
   suspend fun setupDetector(): Boolean {
     val MT = ::setupDetector.name
     LOG.V2(TG, "$MT: setting up detector..")
+    
+    // BYPASS: Skip detector setup for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipDetectorSetup = true // Set to false to re-enable detector setup
+    
+    if (skipDetectorSetup) {
+      LOG.W(TG, "$MT: Detector setup bypassed for basic navigation")
+      return true // Return true to prevent app from finishing
+    }
+    
     try {
       // Read DS Preferences:
       val prefsCv = VMD.dsCv.read.first()
@@ -194,6 +204,16 @@ abstract class DetectorActivityBase : CameraActivity(),
 
   override fun processImage() {
     val MT = ::processImage.name
+
+    // BYPASS: Skip image processing for basic navigation
+    // TODO: Remove this bypass when SMAS is properly configured
+    val skipImageProcessing = true // Set to false to re-enable image processing
+    
+    if (skipImageProcessing) {
+      LOG.V3(TG, "$MT: Image processing bypassed for basic navigation")
+      readyForNextImage()
+      return
+    }
 
     ++timestamp
     VMD.trackingOverlay.postInvalidate()
