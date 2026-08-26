@@ -261,3 +261,9 @@ fabric.properties
 
 .idea/modules/navigator/AnyplaceClients.navigator.iml
 .idea/modules/logger/AnyplaceClients.logger.iml
+
+# --- security: local env & deps ---
+.env
+.env.*
+!*.env.example
+node_modules/
